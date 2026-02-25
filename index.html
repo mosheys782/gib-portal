@@ -176,25 +176,31 @@ var CONFIG_PATH = 'config.json';
 // Config loading - try config.json first, fall back to defaults
 async function loadConfig() {
   try {
-    // Fetch from GitHub raw (no cache) for instant updates
-    var resp = await fetch('https://raw.githubusercontent.com/' + GITHUB_REPO + '/main/' + CONFIG_PATH + '?t=' + Date.now());
+    // Try GitHub API first (always fresh, no cache)
+    var resp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH, {
+      headers: { 'Accept': 'application/vnd.github.v3.raw' }
+    });
     if (resp.ok) {
       configData = await resp.json();
-      console.log('Loaded config from GitHub');
-    } else {
-      // Fallback to local file
-      var local = await fetch('config.json?t=' + Date.now());
-      if (local.ok) { configData = await local.json(); console.log('Loaded local config'); }
+      console.log('Loaded config from GitHub API');
+      return;
     }
+  } catch(e) { console.log('GitHub API load failed:', e); }
+  try {
+    // Fallback to local file
+    var local = await fetch('config.json?t=' + Date.now());
+    if (local.ok) { configData = await local.json(); console.log('Loaded local config'); }
   } catch(e) {
-    console.log('Config load error, using defaults:', e);
+    console.log('Config load error, using defaults');
   }
 }
 
-// Auto-refresh config every 30 seconds for all users
+// Auto-refresh config every 60 seconds for all users
 setInterval(async function() {
   try {
-    var resp = await fetch('https://raw.githubusercontent.com/' + GITHUB_REPO + '/main/' + CONFIG_PATH + '?t=' + Date.now());
+    var resp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH, {
+      headers: { 'Accept': 'application/vnd.github.v3.raw' }
+    });
     if (resp.ok) {
       var newData = await resp.json();
       var newStr = JSON.stringify(newData);
@@ -202,13 +208,12 @@ setInterval(async function() {
       if (newStr !== oldStr) {
         configData = newData;
         renderCards();
-        // Update admin list if open
         if (document.getElementById('adminModal').classList.contains('open')) renderAdminList();
         console.log('Config auto-refreshed');
       }
     }
   } catch(e) {}
-}, 30000);
+}, 60000);
 
 function getItems(section) {
   if (configData && configData[section]) return configData[section];
