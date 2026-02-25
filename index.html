@@ -346,10 +346,16 @@ async function saveConfigToGitHub() {
     if (!token) { alert('Cannot save without a GitHub token.'); return; }
     localStorage.setItem('gib_gh_token', token);
   }
+  // Show saving indicator
+  var statusEl = document.createElement('div');
+  statusEl.id = 'saveStatus';
+  statusEl.style.cssText = 'position:fixed;top:20px;right:20px;padding:10px 20px;border-radius:8px;font-size:13px;font-family:inherit;z-index:999;color:#fff;background:#f59e0b;box-shadow:0 4px 12px rgba(0,0,0,.15)';
+  statusEl.textContent = 'Saving to GitHub...';
+  document.body.appendChild(statusEl);
   try {
     // Get current file SHA
     var getResp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH, {
-      headers: { 'Authorization': 'token ' + token }
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
     var sha = '';
     if (getResp.ok) {
@@ -357,27 +363,40 @@ async function saveConfigToGitHub() {
       sha = getData.sha;
     }
     // Put updated config
-    var content = btoa(unescape(encodeURIComponent(JSON.stringify(configData, null, 2))));
-    var body = { message: 'Update portal config', content: content };
+    var jsonStr = JSON.stringify(configData, null, 2);
+    var encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+    var body = { message: 'Update portal config', content: encoded, branch: 'main' };
     if (sha) body.sha = sha;
     var putResp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH, {
       method: 'PUT',
-      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
       body: JSON.stringify(body)
     });
     if (putResp.ok) {
+      statusEl.style.background = '#22c55e';
+      statusEl.textContent = '\u2713 Saved to GitHub';
       console.log('Config saved to GitHub');
     } else {
       var err = await putResp.json();
       console.error('GitHub save error:', err);
-      if (putResp.status === 401) {
+      statusEl.style.background = '#ef4444';
+      if (putResp.status === 401 || putResp.status === 403) {
         localStorage.removeItem('gib_gh_token');
-        alert('Invalid token. Please try again.');
+        statusEl.textContent = '\u2716 Token invalid or no permission. Will ask again on next save.';
+      } else if (putResp.status === 404) {
+        statusEl.textContent = '\u2716 Repo not found. Check GITHUB_REPO: ' + GITHUB_REPO;
+      } else if (putResp.status === 409) {
+        statusEl.textContent = '\u2716 Conflict - try again';
+      } else {
+        statusEl.textContent = '\u2716 Save failed: ' + (err.message || putResp.status);
       }
     }
   } catch(e) {
     console.error('Save error:', e);
+    statusEl.style.background = '#ef4444';
+    statusEl.textContent = '\u2716 Network error: ' + e.message;
   }
+  setTimeout(function(){ if(statusEl.parentNode) statusEl.parentNode.removeChild(statusEl); }, 3000);
 }
 
 // Date
