@@ -24,13 +24,6 @@
   ],
   "carriers": [
     {
-      "name": "NYAIP",
-      "desc": "NY Auto Insurance Plan",
-      "url": "https://www.nyaip.org",
-      "icon": "🚗",
-      "iconBg": "#fef3e6"
-    },
-    {
       "name": "Lancer",
       "desc": "Insurance carrier portal",
       "url": "https://www.lancerinsurance.com",
