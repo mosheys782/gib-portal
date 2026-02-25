@@ -24,13 +24,6 @@
   ],
   "carriers": [
     {
-      "name": "Lancer",
-      "desc": "Insurance carrier portal",
-      "url": "https://www.lancerinsurance.com",
-      "icon": "🛡️",
-      "iconBg": "#e6f7ef"
-    },
-    {
       "name": "Progressive",
       "desc": "Commercial lines portal",
       "url": "https://www.foragentsonly.com",
