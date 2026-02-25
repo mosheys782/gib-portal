@@ -9,9 +9,9 @@
     },
     {
       "name": "Policy Management",
-      "desc": "Policy administration portal",
       "url": "https://apps.powerapps.com",
-      "icon": "🛡️",
+      "desc": "Policy administration portal",
+      "icon": "",
       "iconBg": "#e8f0fd"
     },
     {
