@@ -22,15 +22,7 @@
       "iconBg": "#eeebfc"
     }
   ],
-  "carriers": [
-    {
-      "name": "Pie Insurance",
-      "desc": "Workers comp solutions",
-      "url": "https://www.pieinsurance.com",
-      "icon": "🥧",
-      "iconBg": "#fef3e6"
-    }
-  ],
+  "carriers": [],
   "tools": [
     {
       "name": "AMS360",
