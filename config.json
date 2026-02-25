@@ -24,13 +24,6 @@
   ],
   "carriers": [
     {
-      "name": "EMPLOYERS",
-      "desc": "Workers compensation",
-      "url": "https://www.employers.com",
-      "icon": "🏢",
-      "iconBg": "#eeebfc"
-    },
-    {
       "name": "Pie Insurance",
       "desc": "Workers comp solutions",
       "url": "https://www.pieinsurance.com",
