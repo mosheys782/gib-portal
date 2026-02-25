@@ -25,6 +25,12 @@ body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;background
 .snav a.active{background:#e8f0fd;color:var(--blue);font-weight:600}
 .welcome-bar{text-align:center;padding:36px 0 4px;font-size:24px;font-weight:300;color:var(--g800)}
 .welcome-bar span{color:var(--blue);font-weight:500}
+.search-bar{max-width:480px;margin:0 auto;padding:20px 0 0;position:relative}
+.search-bar input{width:100%;padding:10px 16px 10px 42px;border:1px solid var(--g200);border-radius:10px;font-family:inherit;font-size:14px;background:var(--white);color:var(--g800);outline:none;transition:border-color .15s}
+.search-bar input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,108,181,.1)}
+.search-bar input::placeholder{color:var(--g400)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:16px;pointer-events:none;margin-top:10px}
+.no-results{text-align:center;padding:40px 0;color:var(--g400);font-size:14px}
 .content{padding:32px 0}
 .sec-label{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--g400);margin-bottom:20px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -103,6 +109,7 @@ body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;background
   </div></div>
   <div class="ctr">
     <div class="welcome-bar" id="greeting"></div>
+    <div class="search-bar"><span class="search-icon">&#128269;</span><input type="text" id="searchInput" placeholder="Search applications, carriers, tools..." oninput="doSearch()"></div>
     <div class="content">
       <div id="secApps"><div class="sec-label">Applications</div><div class="grid" id="appsGrid"></div></div>
       <div id="secCarr" style="display:none"><div class="sec-label">Carriers &amp; Vendors</div><div class="grid" id="carrGrid"></div></div>
@@ -233,11 +240,54 @@ function cardHTML(item) {
     '<div class="card-foot"><span class="card-url">'+domain+'</span><div class="card-go">\u2192</div></div></a>';
 }
 
+function doSearch() {
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!q) {
+    // Reset to current section view
+    renderCards();
+    document.getElementById('secApps').style.display = currentSection==='applications'?'':'none';
+    document.getElementById('secCarr').style.display = currentSection==='carriers'?'':'none';
+    document.getElementById('secTools').style.display = currentSection==='tools'?'':'none';
+    document.querySelectorAll('.sec-label').forEach(function(el){ el.style.display = ''; });
+    var nr = document.getElementById('noResults'); if(nr) nr.remove();
+    return;
+  }
+  // Search across all sections
+  var apps = getItems('apps').filter(function(i){ return i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q) || i.url.toLowerCase().includes(q); });
+  var carrs = getItems('carriers').filter(function(i){ return i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q) || i.url.toLowerCase().includes(q); });
+  var tools = getItems('tools').filter(function(i){ return i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q) || i.url.toLowerCase().includes(q); });
+
+  document.getElementById('appsGrid').innerHTML = apps.map(cardHTML).join('');
+  document.getElementById('carrGrid').innerHTML = carrs.map(cardHTML).join('');
+  document.getElementById('toolsGrid').innerHTML = tools.map(cardHTML).join('');
+
+  // Show all sections that have results, hide empty ones
+  document.getElementById('secApps').style.display = apps.length ? '' : 'none';
+  document.getElementById('secCarr').style.display = carrs.length ? '' : 'none';
+  document.getElementById('secTools').style.display = tools.length ? '' : 'none';
+
+  // Show/hide section labels
+  document.querySelectorAll('.sec-label').forEach(function(el){ el.style.display = ''; });
+
+  // No results message
+  var nr = document.getElementById('noResults'); if(nr) nr.remove();
+  if (!apps.length && !carrs.length && !tools.length) {
+    var div = document.createElement('div');
+    div.id = 'noResults';
+    div.className = 'no-results';
+    div.textContent = 'No results for "' + q + '"';
+    document.querySelector('.content').appendChild(div);
+  }
+}
+
 function switchSection(sec) {
   currentSection = sec;
+  document.getElementById('searchInput').value = '';
+  var nr = document.getElementById('noResults'); if(nr) nr.remove();
   document.getElementById('secApps').style.display = sec==='applications'?'':'none';
   document.getElementById('secCarr').style.display = sec==='carriers'?'':'none';
   document.getElementById('secTools').style.display = sec==='tools'?'':'none';
+  renderCards();
   document.querySelectorAll('.snav a').forEach(function(l){ l.classList.toggle('active', l.getAttribute('data-section')===sec); });
 }
 
