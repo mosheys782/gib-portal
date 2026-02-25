@@ -365,6 +365,16 @@ function removeAdmin(idx) {
   renderAdminEmails();
 }
 
+var ICON_LIB = [
+  {cat:'General', icons:['📋','📁','📄','📜','📝','📎','📌','📍','🔖','📊','📈','📉','💼','🗂️','🗃️','🗄️','📦','🏷️']},
+  {cat:'Finance', icons:['💰','💵','💳','🏦','💲','💱','🧾','📑','💹','🪙']},
+  {cat:'Communication', icons:['✉️','📧','💬','📞','📱','💻','🖥️','🌐','📡','🔔']},
+  {cat:'Insurance', icons:['🛡️','🏠','🚗','🚙','🏢','👥','⚕️','🏥','✈️','🚢','🔒','🔑','⚖️','🧑‍💼']},
+  {cat:'Tools', icons:['🔧','🔨','⚙️','🛠️','🔩','🔗','🔍','📐','🧰','🪛']},
+  {cat:'Status', icons:['✅','❌','⚠️','ℹ️','❓','⭐','🔴','🟢','🟡','🔵']},
+  {cat:'Other', icons:['🎯','🚀','💡','🔥','⚡','🎉','🥧','📊','🗺️','📅','⏰','🔄','➕','🆕']}
+];
+
 function editItem(idx) {
   var key = sectionKey(currentAdminTab);
   var items = getItems(key);
@@ -372,10 +382,52 @@ function editItem(idx) {
   var html = '<div class="ef"><label>Name</label><input id="eName" value="'+item.name+'">'+
     '<label>URL</label><input id="eUrl" value="'+item.url+'">'+
     '<label>Description</label><input id="eDesc" value="'+item.desc+'">'+
-    '<label>Icon (emoji)</label><input id="eIcon" value="'+item.icon+'" style="width:60px">'+
-    '<label>Icon Background</label><input id="eIconBg" type="color" value="'+item.iconBg+'" style="width:60px;height:32px;padding:2px">'+
+    '<label>Icon</label><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">'+
+    '<div id="iconPreview" style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;background:'+item.iconBg+'">'+item.icon+'</div>'+
+    '<input id="eIcon" value="'+item.icon+'" style="width:50px;text-align:center;font-size:18px" oninput="document.getElementById(\'iconPreview\').textContent=this.value">'+
+    '<button type="button" onclick="toggleIconPicker()" style="padding:6px 12px;border:1px solid var(--g200);border-radius:8px;background:var(--white);cursor:pointer;font-size:12px;font-family:inherit;color:var(--g600)">Browse Icons</button></div>'+
+    '<div id="iconPicker" style="display:none;max-height:200px;overflow-y:auto;border:1px solid var(--g200);border-radius:8px;padding:8px;margin-bottom:8px;background:var(--white)"></div>'+
+    '<label>Icon Background</label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input id="eIconBg" type="color" value="'+item.iconBg+'" style="width:40px;height:32px;padding:2px;border:1px solid var(--g200);border-radius:6px;cursor:pointer" oninput="document.getElementById(\'iconPreview\').style.background=this.value">'+
+    '<div style="display:flex;gap:4px">'+
+    '<span class="clr-dot" onclick="pickBg(\'#e8f0fd\')" style="width:24px;height:24px;border-radius:6px;background:#e8f0fd;cursor:pointer;border:1px solid var(--g200)"></span>'+
+    '<span class="clr-dot" onclick="pickBg(\'#e6f7ef\')" style="width:24px;height:24px;border-radius:6px;background:#e6f7ef;cursor:pointer;border:1px solid var(--g200)"></span>'+
+    '<span class="clr-dot" onclick="pickBg(\'#eeebfc\')" style="width:24px;height:24px;border-radius:6px;background:#eeebfc;cursor:pointer;border:1px solid var(--g200)"></span>'+
+    '<span class="clr-dot" onclick="pickBg(\'#fef3e6\')" style="width:24px;height:24px;border-radius:6px;background:#fef3e6;cursor:pointer;border:1px solid var(--g200)"></span>'+
+    '<span class="clr-dot" onclick="pickBg(\'#fde8e8\')" style="width:24px;height:24px;border-radius:6px;background:#fde8e8;cursor:pointer;border:1px solid var(--g200)"></span>'+
+    '</div></div>'+
     '<div class="fa"><button class="bs" onclick="saveItem('+idx+')">Save</button><button class="bc" onclick="renderAdminList()">Cancel</button></div></div>';
   document.getElementById('adminList').innerHTML = html;
+}
+
+function toggleIconPicker() {
+  var el = document.getElementById('iconPicker');
+  if (el.style.display === 'none') {
+    var html = '';
+    ICON_LIB.forEach(function(cat) {
+      html += '<div style="font-size:11px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;'+(!html?'margin-top:0':'')+'">'+cat.cat+'</div>';
+      html += '<div style="display:flex;flex-wrap:wrap;gap:2px">';
+      cat.icons.forEach(function(icon) {
+        html += '<span onclick="pickIcon(\''+icon+'\')" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border-radius:8px;transition:background .1s" onmouseover="this.style.background=\'var(--g100)\'" onmouseout="this.style.background=\'transparent\'">'+icon+'</span>';
+      });
+      html += '</div>';
+    });
+    el.innerHTML = html;
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function pickIcon(icon) {
+  document.getElementById('eIcon').value = icon;
+  document.getElementById('iconPreview').textContent = icon;
+  document.getElementById('iconPicker').style.display = 'none';
+}
+
+function pickBg(color) {
+  document.getElementById('eIconBg').value = color;
+  document.getElementById('iconPreview').style.background = color;
 }
 
 function saveItem(idx) {
