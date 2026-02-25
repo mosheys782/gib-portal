@@ -8,16 +8,16 @@
       "iconBg": "#e6f7ef"
     },
     {
-      "name": "Policy Management",
-      "desc": "Policy administration portal",
-      "url": "https://apps.powerapps.com",
+      "name": "AMS360",
+      "url": "https://www.ams360.com/v2512561/NextGen/Home",
+      "desc": "Agency management system",
       "icon": "🛡️",
       "iconBg": "#e8f0fd"
     },
     {
-      "name": "AMS360",
-      "url": "https://www.ams360.com/v2512561/NextGen/Home",
-      "desc": "Agency management system",
+      "name": "Policy Management",
+      "desc": "Policy administration portal",
+      "url": "https://apps.powerapps.com",
       "icon": "🛡️",
       "iconBg": "#e8f0fd"
     },
