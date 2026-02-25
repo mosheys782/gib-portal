@@ -122,6 +122,7 @@ body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;background
         <button class="mtab active" onclick="switchAdminTab('applications')">Applications</button>
         <button class="mtab" onclick="switchAdminTab('carriers')">Carriers &amp; Vendors</button>
         <button class="mtab" onclick="switchAdminTab('tools')">Tools</button>
+        <button class="mtab" onclick="switchAdminTab('admins')">Admins</button>
       </div>
       <div id="adminList"></div>
       <div class="aa" onclick="addNewItem()">+ Add new link</div>
@@ -223,12 +224,13 @@ function closeAdmin() { document.getElementById('adminModal').classList.remove('
 function switchAdminTab(tab) {
   currentAdminTab = tab;
   document.querySelectorAll('.mtab').forEach(function(t,i){
-    t.classList.toggle('active', (i===0 && tab==='applications') || (i===1 && tab==='carriers') || (i===2 && tab==='tools'));
+    t.classList.toggle('active', (i===0 && tab==='applications') || (i===1 && tab==='carriers') || (i===2 && tab==='tools') || (i===3 && tab==='admins'));
   });
   renderAdminList();
 }
 
 function renderAdminList() {
+  if (currentAdminTab === 'admins') { renderAdminEmails(); return; }
   var key = sectionKey(currentAdminTab);
   var items = getItems(key);
   var html = '';
@@ -240,6 +242,48 @@ function renderAdminList() {
       '<button class="bd" onclick="deleteItem('+idx+')" title="Delete">\u2716</button></div>';
   });
   document.getElementById('adminList').innerHTML = html;
+}
+
+function getAdminEmails() {
+  if (configData && configData.admins) return configData.admins;
+  return ADMIN_EMAILS.slice();
+}
+
+function renderAdminEmails() {
+  var emails = getAdminEmails();
+  var html = '<div style="margin-bottom:12px;font-size:13px;color:var(--g500)">Users with admin access can manage all portal links.</div>';
+  emails.forEach(function(email, idx) {
+    html += '<div class="ai"><div class="ii">\ud83d\udc64</div><div class="info"><div class="nm">'+email+'</div></div>'+
+      '<button class="bd" onclick="removeAdmin('+idx+')" title="Remove">\u2716</button></div>';
+  });
+  html += '<div style="display:flex;gap:8px;margin-top:12px"><input id="newAdminEmail" placeholder="email@gibusa.com" style="flex:1;padding:8px 12px;border:1px solid var(--g200);border-radius:8px;font-family:inherit;font-size:13px">'+
+    '<button class="bs" style="padding:8px 20px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer" onclick="addAdmin()">Add</button></div>';
+  document.getElementById('adminList').innerHTML = html;
+}
+
+function addAdmin() {
+  var email = document.getElementById('newAdminEmail').value.trim().toLowerCase();
+  if (!email || !email.includes('@')) { alert('Enter a valid email'); return; }
+  var emails = getAdminEmails();
+  if (emails.indexOf(email) !== -1) { alert('Already an admin'); return; }
+  emails.push(email);
+  if (!configData) configData = { apps: DEFAULT_APPS.slice(), carriers: DEFAULT_CARRIERS.slice(), tools: DEFAULT_TOOLS.slice() };
+  configData.admins = emails;
+  ADMIN_EMAILS = emails;
+  saveConfigToGitHub();
+  renderAdminEmails();
+}
+
+function removeAdmin(idx) {
+  var emails = getAdminEmails();
+  if (emails[idx].toLowerCase() === currentUser.email.toLowerCase()) { alert('Cannot remove yourself'); return; }
+  if (!confirm('Remove ' + emails[idx] + ' from admins?')) return;
+  emails.splice(idx, 1);
+  if (!configData) configData = { apps: DEFAULT_APPS.slice(), carriers: DEFAULT_CARRIERS.slice(), tools: DEFAULT_TOOLS.slice() };
+  configData.admins = emails;
+  ADMIN_EMAILS = emails;
+  saveConfigToGitHub();
+  renderAdminEmails();
 }
 
 function editItem(idx) {
@@ -357,7 +401,9 @@ async function showPortal(account) {
   var name = account.name || email.split('@')[0];
   currentUser = { name: name, email: email };
   console.log('User email:', email, 'Admin:', ADMIN_EMAILS.map(function(e){return e.toLowerCase()}).indexOf(email) !== -1);
-  isAdmin = ADMIN_EMAILS.map(function(e){ return e.toLowerCase() }).indexOf(email) !== -1;
+  // Check admins from config or defaults
+  var adminList = (configData && configData.admins) ? configData.admins : ADMIN_EMAILS;
+  isAdmin = adminList.map(function(e){ return e.toLowerCase() }).indexOf(email) !== -1;
 
   var firstName = (name || '').split(' ')[0];
   var hour = new Date().getHours();
