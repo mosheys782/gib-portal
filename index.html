@@ -416,6 +416,15 @@ async function doLogin() {
   }
 }
 
-initAuth();
+// Don't run auth inside popup windows
+if (window.opener) {
+  // We're inside a popup - let MSAL handle the redirect
+  var popupMsal = new msal.PublicClientApplication(msalConfig);
+  popupMsal.initialize().then(function() {
+    popupMsal.handleRedirectPromise();
+  });
+} else {
+  initAuth();
+}
 </script>
 </body></html>
