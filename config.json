@@ -24,13 +24,6 @@
   ],
   "carriers": [
     {
-      "name": "Progressive",
-      "desc": "Commercial lines portal",
-      "url": "https://www.foragentsonly.com",
-      "icon": "🚙",
-      "iconBg": "#e8f0fd"
-    },
-    {
       "name": "EMPLOYERS",
       "desc": "Workers compensation",
       "url": "https://www.employers.com",
