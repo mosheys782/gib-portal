@@ -8,10 +8,10 @@
       "iconBg": "#e6f7ef"
     },
     {
-      "name": "Policy Management",
-      "desc": "Policy administration portal",
+      "name": "Policy Workflow & Status",
       "url": "https://apps.powerapps.com",
-      "icon": "🛡️",
+      "desc": "Policy Workflow & Status portal",
+      "icon": "🔄",
       "iconBg": "#e8f0fd"
     },
     {
