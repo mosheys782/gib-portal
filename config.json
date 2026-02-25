@@ -20,13 +20,6 @@
       "url": "https://opspay.gibusa.com",
       "icon": "💰",
       "iconBg": "#eeebfc"
-    },
-    {
-      "name": "SharePoint",
-      "desc": "Document management",
-      "url": "https://gibusa.sharepoint.com",
-      "icon": "📁",
-      "iconBg": "#e8f0fd"
     }
   ],
   "carriers": [
