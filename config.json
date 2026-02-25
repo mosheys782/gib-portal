@@ -32,13 +32,6 @@
   "carriers": [],
   "tools": [
     {
-      "name": "AMS360",
-      "desc": "Agency management system",
-      "url": "https://www.vertafore.com",
-      "icon": "💻",
-      "iconBg": "#e8f0fd"
-    },
-    {
       "name": "Carrier Connect",
       "desc": "Carrier quoting portal",
       "url": "https://www.ivans.com",
