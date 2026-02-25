@@ -1,18 +1,18 @@
 {
   "apps": [
     {
-      "name": "Licenses",
-      "desc": "License management system",
-      "url": "https://apps.powerapps.com",
-      "icon": "📋",
-      "iconBg": "#e6f7ef"
-    },
-    {
       "name": "AMS360",
       "url": "https://www.ams360.com/v2512561/NextGen/Home",
       "desc": "Agency management system",
       "icon": "🛡️",
       "iconBg": "#e8f0fd"
+    },
+    {
+      "name": "Licenses",
+      "desc": "License management system",
+      "url": "https://apps.powerapps.com",
+      "icon": "📋",
+      "iconBg": "#e6f7ef"
     },
     {
       "name": "Policy Management",
