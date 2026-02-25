@@ -15,18 +15,18 @@
       "iconBg": "#e8f0fd"
     },
     {
-      "name": "OpsPay",
-      "desc": "Payment operations dashboard",
-      "url": "https://opspay.gibusa.com",
-      "icon": "💰",
-      "iconBg": "#eeebfc"
-    },
-    {
       "name": "AMS360",
       "url": "https://www.ams360.com/v2512561/NextGen/Home",
       "desc": "Agency management system",
       "icon": "🛡️",
       "iconBg": "#e8f0fd"
+    },
+    {
+      "name": "OpsPay",
+      "desc": "Payment operations dashboard",
+      "url": "https://opspay.gibusa.com",
+      "icon": "💰",
+      "iconBg": "#eeebfc"
     }
   ],
   "carriers": [],
