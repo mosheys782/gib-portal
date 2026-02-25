@@ -8,18 +8,18 @@
       "iconBg": "#e8f0fd"
     },
     {
-      "name": "Licenses",
-      "desc": "License management system",
-      "url": "https://apps.powerapps.com",
-      "icon": "📋",
-      "iconBg": "#e6f7ef"
-    },
-    {
       "name": "Policy Management",
       "desc": "Policy administration portal",
       "url": "https://apps.powerapps.com",
       "icon": "🛡️",
       "iconBg": "#e8f0fd"
+    },
+    {
+      "name": "Licenses",
+      "desc": "License management system",
+      "url": "https://apps.powerapps.com",
+      "icon": "📋",
+      "iconBg": "#e6f7ef"
     },
     {
       "name": "OpsPay",
