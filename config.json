@@ -24,13 +24,6 @@
   ],
   "carriers": [
     {
-      "name": "Applied Epic",
-      "desc": "Agency management system",
-      "url": "https://epic.appliedsystems.com",
-      "icon": "📊",
-      "iconBg": "#e8f0fd"
-    },
-    {
       "name": "NYAIP",
       "desc": "NY Auto Insurance Plan",
       "url": "https://www.nyaip.org",
