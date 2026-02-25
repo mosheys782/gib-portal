@@ -23,9 +23,9 @@
     },
     {
       "name": "OpsPay",
-      "desc": "Payment operations dashboard",
       "url": "https://opspay.gibusa.com",
-      "icon": "💰",
+      "desc": "Payment operations dashboard",
+      "icon": "🏦",
       "iconBg": "#eeebfc"
     }
   ],
