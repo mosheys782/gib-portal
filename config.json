@@ -27,13 +27,6 @@
       "url": "https://gibusa.sharepoint.com",
       "icon": "📁",
       "iconBg": "#e8f0fd"
-    },
-    {
-      "name": "Outlook",
-      "desc": "Email & calendar",
-      "url": "https://outlook.office.com",
-      "icon": "✉️",
-      "iconBg": "#e6f7ef"
     }
   ],
   "carriers": [
