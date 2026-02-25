@@ -1,0 +1,26 @@
+{
+  "apps": [
+    {"name": "Licenses", "desc": "License management system", "url": "https://apps.powerapps.com", "icon": "📋", "iconBg": "#e6f7ef"},
+    {"name": "Policy Management", "desc": "Policy administration portal", "url": "https://apps.powerapps.com", "icon": "🛡️", "iconBg": "#e8f0fd"},
+    {"name": "OpsPay", "desc": "Payment operations dashboard", "url": "https://opspay.gibusa.com", "icon": "💰", "iconBg": "#eeebfc"},
+    {"name": "SharePoint", "desc": "Document management", "url": "https://gibusa.sharepoint.com", "icon": "📁", "iconBg": "#e8f0fd"},
+    {"name": "Outlook", "desc": "Email & calendar", "url": "https://outlook.office.com", "icon": "✉️", "iconBg": "#e6f7ef"},
+    {"name": "Teams", "desc": "Chat & collaboration", "url": "https://teams.microsoft.com", "icon": "💬", "iconBg": "#eeebfc"}
+  ],
+  "carriers": [
+    {"name": "Applied Epic", "desc": "Agency management system", "url": "https://epic.appliedsystems.com", "icon": "📊", "iconBg": "#e8f0fd"},
+    {"name": "NYAIP", "desc": "NY Auto Insurance Plan", "url": "https://www.nyaip.org", "icon": "🚗", "iconBg": "#fef3e6"},
+    {"name": "Lancer", "desc": "Insurance carrier portal", "url": "https://www.lancerinsurance.com", "icon": "🛡️", "iconBg": "#e6f7ef"},
+    {"name": "Progressive", "desc": "Commercial lines portal", "url": "https://www.foragentsonly.com", "icon": "🚙", "iconBg": "#e8f0fd"},
+    {"name": "EMPLOYERS", "desc": "Workers compensation", "url": "https://www.employers.com", "icon": "🏢", "iconBg": "#eeebfc"},
+    {"name": "Pie Insurance", "desc": "Workers comp solutions", "url": "https://www.pieinsurance.com", "icon": "🥧", "iconBg": "#fef3e6"}
+  ],
+  "tools": [
+    {"name": "AMS360", "desc": "Agency management system", "url": "https://www.vertafore.com", "icon": "💻", "iconBg": "#e8f0fd"},
+    {"name": "Carrier Connect", "desc": "Carrier quoting portal", "url": "https://www.ivans.com", "icon": "🔗", "iconBg": "#eeebfc"},
+    {"name": "ACORD Forms", "desc": "Insurance forms library", "url": "https://www.acord.org", "icon": "📄", "iconBg": "#e6f7ef"},
+    {"name": "Loss Runs", "desc": "Loss run request tool", "url": "https://www.fieldfirst.com", "icon": "📊", "iconBg": "#fef3e6"},
+    {"name": "Certificate Manager", "desc": "COI issuance & tracking", "url": "https://certificates.gibusa.com", "icon": "📜", "iconBg": "#e8f0fd"},
+    {"name": "Rater", "desc": "Comparative rating tool", "url": "https://www.ezlynx.com", "icon": "💲", "iconBg": "#eeebfc"}
+  ]
+}
