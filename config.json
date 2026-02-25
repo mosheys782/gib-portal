@@ -34,13 +34,6 @@
       "url": "https://outlook.office.com",
       "icon": "✉️",
       "iconBg": "#e6f7ef"
-    },
-    {
-      "name": "Teams",
-      "desc": "Chat & collaboration",
-      "url": "https://teams.microsoft.com",
-      "icon": "💬",
-      "iconBg": "#eeebfc"
     }
   ],
   "carriers": [
