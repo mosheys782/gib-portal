@@ -384,22 +384,36 @@ async function initAuth() {
     if (resp) { showPortal(resp.account); return; }
     var accounts = msalApp.getAllAccounts();
     if (accounts.length > 0) {
-      try { var sr = await msalApp.acquireTokenSilent({scopes:['user.read'],account:accounts[0]}); showPortal(sr.account); return; } catch(e) {}
-      try { var ss = await msalApp.ssoSilent({scopes:['user.read']}); showPortal(ss.account); return; } catch(e) {}
+      try {
+        var sr = await msalApp.acquireTokenSilent({scopes:['user.read'],account:accounts[0]});
+        showPortal(sr.account); return;
+      } catch(e) { console.log('Silent token failed:', e); }
+      try {
+        var ss = await msalApp.ssoSilent({scopes:['user.read']});
+        showPortal(ss.account); return;
+      } catch(e) { console.log('SSO silent failed:', e); }
     }
     document.getElementById('authSpinner').style.display = 'none';
     document.getElementById('authStatus').textContent = 'Please sign in to continue';
-    document.getElementById('authBtn').style.display = '';
+    document.getElementById('authBtn').style.display = 'inline-block';
   } catch(e) {
-    console.error('Auth error:', e);
+    console.error('Auth init error:', e);
     document.getElementById('authSpinner').style.display = 'none';
-    document.getElementById('authStatus').textContent = 'Authentication error. Please try again.';
-    document.getElementById('authBtn').style.display = '';
+    document.getElementById('authStatus').innerHTML = 'Authentication error: ' + e.message + '<br><small style="color:#999">Redirect URI: ' + msalConfig.auth.redirectUri + '</small>';
+    document.getElementById('authBtn').style.display = 'inline-block';
   }
 }
 
 async function doLogin() {
-  try { var r = await msalApp.loginPopup({scopes:['user.read']}); showPortal(r.account); } catch(e) { console.error('Login error:', e); }
+  try {
+    document.getElementById('authBtn').textContent = 'Signing in...';
+    var r = await msalApp.loginPopup({scopes:['user.read']});
+    showPortal(r.account);
+  } catch(e) {
+    console.error('Login error:', e);
+    document.getElementById('authBtn').textContent = 'Sign in with Microsoft';
+    document.getElementById('authStatus').innerHTML = 'Login failed: ' + e.message + '<br><small style="color:#999">Make sure popups are allowed and redirect URI matches in Azure.</small>';
+  }
 }
 
 initAuth();
