@@ -432,15 +432,20 @@ async function saveConfigToGitHub() {
   statusEl.textContent = 'Saving to GitHub...';
   document.body.appendChild(statusEl);
   try {
-    // Get current file SHA
-    var getResp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH, {
-      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
-    });
+    // Get current file SHA (required for updates)
     var sha = '';
-    if (getResp.ok) {
-      var getData = await getResp.json();
-      sha = getData.sha;
-    }
+    try {
+      var getResp = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/' + CONFIG_PATH + '?ref=main', {
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (getResp.ok) {
+        var getData = await getResp.json();
+        sha = getData.sha;
+        console.log('Got SHA:', sha);
+      } else {
+        console.log('SHA fetch status:', getResp.status, '- file may not exist yet');
+      }
+    } catch(e) { console.log('SHA fetch error:', e); }
     // Put updated config
     var jsonStr = JSON.stringify(configData, null, 2);
     var encoded = btoa(unescape(encodeURIComponent(jsonStr)));
